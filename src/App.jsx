@@ -30,7 +30,7 @@ function App() {
 
   const { safetosend, valid, invalid, trap, total } = transformResponseObject(analyticsData);
   return (
-    <div className="card">
+    <div style={{padding: "20px", marginTop: "10px"}}>
       {loading ? <Loader /> :
         <>
           {!isEmpty(analyticsData) ? <EmailStatsDoughnutChart
