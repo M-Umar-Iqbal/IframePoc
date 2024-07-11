@@ -1,18 +1,43 @@
-import { useState } from 'react';
-import './App.css';
-import { getAllQueryParams } from './utils/client-utils';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+
+import EmailStatsDoughnutChart from './components/graphs/CircularAnalyticsGraph';
+import { transformResponseObject } from './utils/client-utils';
+import Loader from './components/common/Loader';
 
 function App() {
-  const [count, setCount] = useState(0);
-  const params = getAllQueryParams();
+  const [analyticsData, setAnalyticsData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const fetchAnalytics = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get("http://localhost:3000/api/fetch-data");
+        if (response?.data) {
+          setAnalyticsData(response.data["SafeToSend Status"]);
+        }
+      } catch (err) {
+        console.log("📌 ~ fetchAnalytics ~ err: ", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchAnalytics();
+  }, []);
+
+  const { safetosend, valid, invalid, trap, total } = transformResponseObject(analyticsData);
   return (
     <div className="card">
-      <div style={{ fontWeight: "bold", fontSize: "20px" }}>{JSON.stringify(params)}</div>
-      <button style={{ marginTop: "20px" }} onClick={() => setCount((count) => count + 1)}>
-        Count is {count}
-      </button>
+      {loading ? <Loader /> :
+        <EmailStatsDoughnutChart
+          total={total}
+          safetosend={safetosend}
+          valid={valid}
+          invalid={invalid}
+          trap={trap}
+        />}
     </div>
   )
 }
 
-export default App
+export default App;
