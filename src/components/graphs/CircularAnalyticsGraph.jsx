@@ -33,13 +33,26 @@ const EmailStatsDoughnutChart = ({ total, safetosend, valid, invalid, trap }) =>
       boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
       display: "inline-block",
       minWidth: "600px",
+      minHeight: "250px",
       padding: "30px",
       borderRadius: "20px",
-      margin: "20px",
       fontFamily: "'Helvetica Neue', 'Arial', 'sans-serif'",
       color: "#333",
     }}>
-      <h2 style={{ marginTop: 0, marginBottom: "20px", fontSize: "24px", fontWeight: "700" }}>Safe2Send Analytics</h2>
+      <h2 style={{
+        marginTop: 0,
+        marginBottom: "20px",
+        fontSize: "24px",
+        fontWeight: "700",
+        textAlign: "center",
+        color: "#fff",
+        backgroundColor: "#000",
+        padding: "10px 0",
+        borderRadius: "20px"
+      }
+      }>
+        Safe2Send Analytics
+      </h2>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <div style={{
           width: 300,
