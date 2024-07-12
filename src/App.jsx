@@ -1,20 +1,23 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import { BsFillExclamationCircleFill } from "react-icons/bs";
 import { isEmpty } from 'lodash';
 
 import EmailStatsDoughnutChart from './components/graphs/CircularAnalyticsGraph';
 import { transformResponseObject } from './utils/client-utils';
+import ErrorMessage from './components/common/ErrorBanner';
 import Loader from './components/common/Loader';
-
 
 function App() {
   const [analyticsData, setAnalyticsData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const isInitialLoad = useRef(true);
+
   useEffect(() => {
     const fetchAnalytics = async () => {
+      if (isInitialLoad.current) {
+        setLoading(true); // Show loader only during initial load
+      }
       try {
-        setLoading(true);
         const response = await axios.get("http://localhost:3000/api/fetch-data");
         if (response?.data) {
           setAnalyticsData(response.data["SafeToSend Status"]);
@@ -22,43 +25,42 @@ function App() {
       } catch (err) {
         console.log("📌 ~ fetchAnalytics ~ err: ", err);
       } finally {
-        setLoading(false);
+        if (isInitialLoad.current) {
+          setLoading(false); // Hide loader after initial load
+          isInitialLoad.current = false; // Set ref to false after initial load
+        }
       }
-    }
-    fetchAnalytics();
+    };
+
+    fetchAnalytics(); // Initial fetch
+
+    const intervalId = setInterval(fetchAnalytics, 60000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   const { safetosend, valid, invalid, trap, total } = transformResponseObject(analyticsData);
+
   return (
-    <div style={{padding: "20px", marginTop: "10px"}}>
-      {loading ? <Loader /> :
-        <>
-          {!isEmpty(analyticsData) ? <EmailStatsDoughnutChart
-            total={total}
-            safetosend={safetosend}
-            valid={valid}
-            invalid={invalid}
-            trap={trap}
-          /> : <div
-            style={{
-              backgroundColor: "#FF8D8D",
-              color: "black",
-              fontWeight: "600",
-              padding: "10px 20px",
-              margin: "10px",
-              borderRadius: "20px",
-              display: "inline-block",
-              boxShadow: "7px 5px"
-            }}>
-            <div style={{ display: "flex" }}>
-              <span style={{ display: "inline-block", marginRight: "5px", paddingTop: "4px" }}><BsFillExclamationCircleFill size={20} /></span>
-              <span style={{ padding: "4px 0" }}>No Safe2Send analytics found!</span>
-            </div>
-          </div>}
-        </>
-      }
+    <div style={{ padding: "20px", marginTop: "10px" }}>
+      {loading ? (
+        <div style={{ display: 'flex', alignItems: "center" }}>
+          <h3 style={{ marginRight: "10px" }}>Loading </h3>
+          <Loader />
+        </div>
+      ) : !isEmpty(analyticsData) ? (
+        <EmailStatsDoughnutChart
+          total={total}
+          safetosend={safetosend}
+          valid={valid}
+          invalid={invalid}
+          trap={trap}
+        />
+      ) : (
+        <ErrorMessage title={"No Safe2Send analytics found!"} />
+      )}
     </div>
-  )
+  );
 }
 
 export default App;
