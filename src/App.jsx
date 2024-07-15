@@ -23,7 +23,7 @@ function App() {
       try {
         const month = date.getMonth() + 1; // Get the month (0-based index, so add 1)
         const year = date.getFullYear();
-        const response = await axios.get(`http://localhost:3000/api/fetch-data?month=${month}&year=${year}`);
+        const response = await axios.get(`http://3.92.204.157:3000/api/fetch-data?month=${month}&year=${year}`);
         if (response?.data) {
           setAnalyticsData(response.data["SafeToSend Status"]);
         }
@@ -64,7 +64,7 @@ function App() {
         <DatePicker
           selected={selectedDate}
           onChange={handleDateChange}
-          dateFormat="MM/yyyy"
+          dateFormat="M/yyyy"
           showMonthYearPicker
         />
       </div>
