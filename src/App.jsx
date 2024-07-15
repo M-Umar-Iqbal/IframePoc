@@ -5,7 +5,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import EmailStatsDoughnutChart from './components/graphs/CircularAnalyticsGraph';
-import { getAllQueryParams, transformResponseObject } from './utils/client-utils';
+import { transformResponseObject } from './utils/client-utils';
 import ErrorMessage from './components/common/ErrorBanner';
 import Loader from './components/common/Loader';
 
@@ -23,7 +23,7 @@ function App() {
       try {
         const month = date.getMonth() + 1; // Get the month (0-based index, so add 1)
         const year = date.getFullYear();
-        const response = await axios.get(`http://3.92.204.157:3000/api/fetch-data?month=${month}&year=${year}`);
+        const response = await axios.get(`https://rocketly-dev.hpdemos.co/api/fetch-data?month=${month}&year=${year}`);
         if (response?.data) {
           setAnalyticsData(response.data["SafeToSend Status"]);
         }
@@ -51,10 +51,8 @@ function App() {
   };
 
   const { safetosend, valid, invalid, trap, total } = transformResponseObject(analyticsData);
-  const query = getAllQueryParams();
   return (
     <div style={{ padding: "0 30px", marginTop: "10px" }}>
-      <p>{JSON.stringify(query)}</p>
       <div style={{ display: "flex", justifyContent: "flex-start", alignItems: "center", padding: "30px 0" }}>
         <h3 style={{
           marginRight: "5px",
