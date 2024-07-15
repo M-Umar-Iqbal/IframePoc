@@ -5,7 +5,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import EmailStatsDoughnutChart from './components/graphs/CircularAnalyticsGraph';
-import { transformResponseObject } from './utils/client-utils';
+import { getAllQueryParams, transformResponseObject } from './utils/client-utils';
 import ErrorMessage from './components/common/ErrorBanner';
 import Loader from './components/common/Loader';
 
@@ -51,9 +51,10 @@ function App() {
   };
 
   const { safetosend, valid, invalid, trap, total } = transformResponseObject(analyticsData);
-
+  const query = getAllQueryParams();
   return (
     <div style={{ padding: "0 30px", marginTop: "10px" }}>
+      <p>{JSON.stringify(query)}</p>
       <div style={{ display: "flex", justifyContent: "flex-start", alignItems: "center", padding: "30px 0" }}>
         <h3 style={{
           marginRight: "5px",
