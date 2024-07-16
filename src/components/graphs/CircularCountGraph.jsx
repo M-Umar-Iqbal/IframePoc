@@ -2,13 +2,13 @@ import { Doughnut } from 'react-chartjs-2';
 import 'chart.js/auto';
 
 // eslint-disable-next-line react/prop-types
-const EmailStatsDoughnutChart = ({ total, safetosend, valid, invalid, trap }) => {
+const CircularCountGraph = ({ success, reject, noResponse, total }) => {
   const data = {
-    labels: ['Safe to Send', 'Valid', 'Invalid', 'Trap'],
+    labels: ['Success', 'Reject', 'No Response'],
     datasets: [{
       label: 'Email Stats',
-      data: [safetosend, valid, invalid, trap],
-      backgroundColor: ['#4caf50', '#8bc34a', '#f44336', '#ff9800'],
+      data: [success, reject, noResponse],
+      backgroundColor: ['#81FF9A', '#f44336', '#567371'],
       hoverOffset: 4,
     }],
   };
@@ -28,8 +28,7 @@ const EmailStatsDoughnutChart = ({ total, safetosend, valid, invalid, trap }) =>
   };
 
   return (
-    <div
-    style={{
+    <div style={{
       backgroundColor: "#ffffff",
       boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
       display: "inline-block",
@@ -37,7 +36,6 @@ const EmailStatsDoughnutChart = ({ total, safetosend, valid, invalid, trap }) =>
       minHeight: "250px",
       padding: "30px",
       borderRadius: "20px",
-      fontFamily: "'Helvetica Neue', 'Arial', 'sans-serif'",
       color: "#333",
     }}>
       <h3
@@ -52,7 +50,7 @@ const EmailStatsDoughnutChart = ({ total, safetosend, valid, invalid, trap }) =>
           borderRadius: "20px"
         }
         }>
-        SafeToSend Emails Analytics
+        Status Counter Analytics
       </h3>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <div style={{
@@ -65,20 +63,16 @@ const EmailStatsDoughnutChart = ({ total, safetosend, valid, invalid, trap }) =>
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ fontSize: "20px", marginBottom: "15px" }}><b>Total</b> {total}</div>
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: "10px" }}>
-            <div style={{ width: 20, height: 20, backgroundColor: '#4caf50', marginRight: 10, borderRadius: "3px" }}></div>
-            <div><b>Safe to Send:</b> {safetosend} ({((safetosend / total) * 100).toFixed(2)}%)</div>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', marginBottom: "10px" }}>
-            <div style={{ width: 20, height: 20, backgroundColor: '#8bc34a', marginRight: 10, borderRadius: "3px" }}></div>
-            <div><b>Valid:</b> {valid} ({((valid / total) * 100).toFixed(2)}%)</div>
+            <div style={{ width: 20, height: 20, backgroundColor: '#81FF9A', marginRight: 10, borderRadius: "3px" }}></div>
+            <div><b>Success:</b> {success} ({((success / total) * 100).toFixed(2)}%)</div>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: "10px" }}>
             <div style={{ width: 20, height: 20, backgroundColor: '#f44336', marginRight: 10, borderRadius: "3px" }}></div>
-            <div><b>Invalid:</b> {invalid} ({((invalid / total) * 100).toFixed(2)}%)</div>
+            <div><b>Reject:</b> {reject} ({((reject / total) * 100).toFixed(2)}%)</div>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: "10px" }}>
-            <div style={{ width: 20, height: 20, backgroundColor: '#ff9800', marginRight: 10, borderRadius: "3px" }}></div>
-            <div><b>Trap:</b> {trap} ({((trap / total) * 100).toFixed(2)}%)</div>
+            <div style={{ width: 20, height: 20, backgroundColor: '#567371', marginRight: 10, borderRadius: "3px" }}></div>
+            <div><b>No-Response:</b> {noResponse} ({((noResponse / total) * 100).toFixed(2)}%)</div>
           </div>
         </div>
       </div>
@@ -86,4 +80,4 @@ const EmailStatsDoughnutChart = ({ total, safetosend, valid, invalid, trap }) =>
   );
 };
 
-export default EmailStatsDoughnutChart;
+export default CircularCountGraph;

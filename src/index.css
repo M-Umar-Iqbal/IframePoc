@@ -3,5 +3,17 @@ body {
   margin: 0;
   padding: 0;
   background-color: #F5FFFF;
+  font-family: 'Roboto', sans-serif;
 }
 
+.date-picker {
+  background-color: #E5E5E5;
+  padding: 10px 10px;
+  border-radius: 12px;
+  outline: none;
+  border: 2px solid white;
+  /* box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); */
+}
+.date-picker:hover {
+  cursor: pointer;
+}

@@ -4,8 +4,8 @@ function Loader() {
     return (
         <Puff
             visible={true}
-            height="40"
-            width="40"
+            height="80"
+            width="80"
             color="#4fa94d"
             ariaLabel="puff-loading"
             wrapperStyle={{}}
