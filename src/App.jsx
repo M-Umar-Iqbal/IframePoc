@@ -104,33 +104,52 @@ function App() {
               showMonthYearPicker
             />
           </div>
-          {emailAnalyticsLoading ? <div>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "70vh" }}>
-              <Loader />
-            </div>
-          </div> : <div
-            style={{
-              backgroundColor: "#ffffff",
-              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-              minWidth: "600px",
-              padding: "30px",
-              minHeight: "fit-content",
-              borderRadius: "20px",
-              fontFamily: "'Helvetica Neue', 'Arial', 'sans-serif'",
-              color: "#333",
-            }}>
-            {!isEmpty(analyticsData) ? (
-              <EmailStatsDoughnutChart
-                total={total}
-                safetosend={safetosend}
-                valid={valid}
-                invalid={invalid}
-                trap={trap}
-              />
-            ) : (
-              <MessageBanner title={"No SafeToSend Email analytics found!"} bg={"#FF6F6F"} txtColor={"#FFFFFF"} />
+          <div style={{ position: 'relative' }}>
+            {(
+              <div
+                style={{
+                  backgroundColor: "#ffffff",
+                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                  minWidth: "600px",
+                  padding: "30px",
+                  minHeight: "fit-content",
+                  borderRadius: "20px",
+                  fontFamily: "'Helvetica Neue', 'Arial', 'sans-serif'",
+                  color: "#333",
+                  position: 'relative'
+                }}>
+                {emailAnalyticsLoading && (
+                  <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 1
+                  }}>
+                    <Loader />
+                  </div>
+                )}
+                {!isEmpty(analyticsData) ? (
+                  <EmailStatsDoughnutChart
+                    total={total}
+                    safetosend={safetosend}
+                    valid={valid}
+                    invalid={invalid}
+                    trap={trap}
+                  />
+                ) : (
+                   emailAnalyticsLoading ?
+                    <div style={{height: "400px"}} />
+                   : <MessageBanner title={"No SafeToSend Email analytics found!"} bg={"#FF6F6F"} txtColor={"#FFFFFF"} />
+                )}
+              </div>
             )}
-          </div>}
+          </div>
         </div>
         <div>
           <h1>POC 2</h1>
@@ -141,32 +160,50 @@ function App() {
             margin: "15px 0",
             boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
           }}>
-            <AppButton bg={"#81FB9B"} disabled={counterGraphLoading} title={"Success"} color={"success"} onClickCallback={() => { fetchCounterAnalytics('success') }} />
-            <AppButton bg={"#F44336"} txtColor={"#FFFFFF"} disabled={counterGraphLoading} title={"Failure"} color={"error"} onClickCallback={() => { fetchCounterAnalytics('reject') }} />
-            <AppButton bg={"#567371"} txtColor={"#FFFFFF"} disabled={counterGraphLoading} title={"No Response"} color={"secondary"} onClickCallback={() => { fetchCounterAnalytics('noResponse') }} />
+            <AppButton bg={"#81FB9B"} txtColor={"#000000"} disabled={counterGraphLoading} title={"Success"} onClickCallback={() => { fetchCounterAnalytics('success') }} />
+            <AppButton bg={"#F44336"} txtColor={"#FFFFFF"} disabled={counterGraphLoading} title={"Failure"} onClickCallback={() => { fetchCounterAnalytics('reject') }} />
+            <AppButton bg={"#567371"} txtColor={"#FFFFFF"} disabled={counterGraphLoading} title={"No Response"} onClickCallback={() => { fetchCounterAnalytics('noResponse') }} />
           </div>
-          {counterGraphLoading ? <div>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "70vh" }}>
-              <Loader />
-            </div>
-          </div> : <div
-            style={{
-              backgroundColor: "#ffffff",
-              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-              minWidth: "600px",
-              padding: "30px",
-              minHeight: "fit-content",
-              borderRadius: "20px",
-              fontFamily: "'Helvetica Neue', 'Arial', 'sans-serif'",
-              color: "#333",
-              margin: "15px 0"
-            }}>
-            {!isEmpty(counterAnalyticsData) ? (
-              <CircularCountGraph noResponse={no_response_total_count} reject={reject_total_count} success={success_total_count} total={total_count} />
-            ) : (
-              <MessageBanner title={"No Counter Data found!"} bg={"#FF6F6F"} txtColor={"#FFFFFF"} />
+          <div style={{ position: 'relative' }}>
+            {(
+              <div
+                style={{
+                  backgroundColor: "#ffffff",
+                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                  minWidth: "600px",
+                  padding: "30px",
+                  minHeight: "fit-content",
+                  borderRadius: "20px",
+                  fontFamily: "'Helvetica Neue', 'Arial', 'sans-serif'",
+                  color: "#333",
+                  position: 'relative'
+                }}>
+                {counterGraphLoading && (
+                  <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 1
+                  }}>
+                    <Loader />
+                  </div>
+                )}
+                {!isEmpty(counterAnalyticsData) ? (
+                  <CircularCountGraph noResponse={no_response_total_count} reject={reject_total_count} success={success_total_count} total={total_count} />
+                ) : (
+                  counterGraphLoading ?
+                    <div style={{height: "400px"}} />
+                   : <MessageBanner title={"No Counter Data found!"} bg={"#FF6F6F"} txtColor={"#FFFFFF"} />
+                )}
+              </div>
             )}
-          </div>}
+          </div>
         </div>
       </div>
     </>

@@ -7,13 +7,16 @@ body {
 }
 
 .date-picker {
-  background-color: #F9FAFB;
+  background-color: #e6e6e6;
   padding: 10px 10px;
   border-radius: 12px;
   outline: none;
   border: 2px solid #F9FAFB;
-  /* box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); */
 }
 .date-picker:hover {
   cursor: pointer;
+}
+
+.app-btn:hover {
+  box-shadow: 3px 3px 1px rgba(0, 0, 0, 0.9) !important;
 }
