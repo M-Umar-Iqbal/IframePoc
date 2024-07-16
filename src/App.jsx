@@ -141,9 +141,9 @@ function App() {
             margin: "15px 0",
             boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
           }}>
-            <AppButton disabled={counterGraphLoading} title={"Success"} color={"success"} onClickCallback={() => { fetchCounterAnalytics('success') }} />
-            <AppButton disabled={counterGraphLoading} title={"Failure"} color={"error"} onClickCallback={() => { fetchCounterAnalytics('reject') }} />
-            <AppButton disabled={counterGraphLoading} title={"No Response"} color={"secondary"} onClickCallback={() => { fetchCounterAnalytics('noResponse') }} />
+            <AppButton bg={"#81FB9B"} disabled={counterGraphLoading} title={"Success"} color={"success"} onClickCallback={() => { fetchCounterAnalytics('success') }} />
+            <AppButton bg={"#F44336"} txtColor={"#FFFFFF"} disabled={counterGraphLoading} title={"Failure"} color={"error"} onClickCallback={() => { fetchCounterAnalytics('reject') }} />
+            <AppButton bg={"#567371"} txtColor={"#FFFFFF"} disabled={counterGraphLoading} title={"No Response"} color={"secondary"} onClickCallback={() => { fetchCounterAnalytics('noResponse') }} />
           </div>
           {counterGraphLoading ? <div>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "70vh" }}>
