@@ -18,7 +18,7 @@ function App() {
   const [analyticsData, setAnalyticsData] = useState([]);
   const [emailAnalyticsLoading, setEmailAnalyticsLoading] = useState(false);
   const [counterGraphLoading, setCounterGraphLoading] = useState(false);
-
+  const today = new Date();
   const [selectedDate, setSelectedDate] = useState(new Date());
   // const isInitialLoad = useRef(true);
 
@@ -100,6 +100,7 @@ function App() {
               selected={selectedDate}
               onChange={handleDateChange}
               dateFormat="M/yyyy"
+              maxDate={today}
               disabled={emailAnalyticsLoading}
               showMonthYearPicker
             />
