@@ -2,7 +2,7 @@ import { Doughnut } from 'react-chartjs-2';
 import 'chart.js/auto';
 
 // eslint-disable-next-line react/prop-types
-const EmailStatsDoughnutChart = ({ total, safetosend, valid, invalid, trap }) => {
+const EmailStatsDoughnutChart = ({ total = 0, safetosend = 0, valid = 0, invalid = 0, trap = 0 }) => {
   const data = {
     labels: ['Safe to Send', 'Valid', 'Invalid', 'Trap'],
     datasets: [{

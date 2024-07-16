@@ -2,7 +2,7 @@ import { Doughnut } from 'react-chartjs-2';
 import 'chart.js/auto';
 
 // eslint-disable-next-line react/prop-types
-const CircularCountGraph = ({ success, reject, noResponse, total }) => {
+const CircularCountGraph = ({ success = 0, reject = 0, noResponse = 0, total = 0 }) => {
   const data = {
     labels: ['Success', 'Reject', 'No Response'],
     datasets: [{
