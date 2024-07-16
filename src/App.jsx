@@ -41,7 +41,7 @@ function App() {
       showLoader && setEmailAnalyticsLoading(true);
       const month = date.getMonth() + 1;
       const year = date.getFullYear();
-      const response = await axios.get(`http://localhost:3000/api/fetch-data?month=${month}&year=${year}`);
+      const response = await axios.get(`https://rocketly-dev.hpdemos.co/api/fetch-data?month=${month}&year=${year}`);
       if (response?.data) {
         setAnalyticsData(response.data["SafeToSend Status"]);
       }
@@ -57,7 +57,7 @@ function App() {
   const fetchCounterAnalytics = async (type) => {
     try {
       setCounterGraphLoading(true);
-      const response = await axios.get(`http://localhost:3000/dashboardApi/update-dashboard?type=${type}`);
+      const response = await axios.get(`https://rocketly-dev.hpdemos.co/v2/dashboardApi/update-dashboard?type=${type}`);
       if (response?.data?.Dashboard) {
         setCounterAnalyticsData(response.data.Dashboard);
       }
