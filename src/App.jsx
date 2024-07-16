@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { isEmpty } from 'lodash';
 import DatePicker from 'react-datepicker';
@@ -20,13 +20,13 @@ function App() {
   const [counterGraphLoading, setCounterGraphLoading] = useState(false);
 
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const isInitialLoad = useRef(true);
+  // const isInitialLoad = useRef(true);
 
   useEffect(() => {
-    if (isInitialLoad.current) {
-      isInitialLoad.current = false;
-      return;
-    }
+    // if (isInitialLoad.current) {
+    //   isInitialLoad.current = false;
+    //   return;
+    // }
     fetchEmailAnalytics(selectedDate, true);
     fetchCounterAnalytics("");
     const intervalId = setInterval(() => {
