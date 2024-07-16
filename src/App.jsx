@@ -25,7 +25,7 @@ function App() {
   useEffect(() => {
     if (isInitialLoad.current) {
       isInitialLoad.current = false;
-      return
+      return;
     }
     fetchEmailAnalytics(selectedDate, true);
     fetchCounterAnalytics("");
@@ -61,7 +61,6 @@ function App() {
       if (response?.data?.Dashboard) {
         setCounterAnalyticsData(response.data.Dashboard);
       }
-      toast.success('Counter updated successfully.');
     } catch (err) {
       console.log("📌 ~ handleAPICall ~ err: ", err);
       toast.error('Failed to update counter data');
