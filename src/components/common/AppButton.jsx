@@ -1,13 +1,11 @@
 import PropTypes from 'prop-types';
 
-const AppButton = ({ bg, txtColor, title, disabled, onClickCallback }) => {
+const AppButton = ({ style, title, disabled, onClickCallback, icon }) => {
   return (
     <button
       className={disabled ? "" : "app-btn"}
       style={{
-        backgroundColor: bg || '#007BFF',
-        color: txtColor || '#FFFFFF',
-        marginRight: '7px',
+        marginRight: '2px',
         border: 'none',
         padding: '10px 20px',
         fontSize: '16px',
@@ -17,10 +15,16 @@ const AppButton = ({ bg, txtColor, title, disabled, onClickCallback }) => {
         boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
         transition: 'all 0.3s ease',
         opacity: disabled ? 0.6 : 1,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '8px',
+        ...style
       }}
       disabled={disabled}
       onClick={onClickCallback}
     >
+      {icon && <span style={{ display: 'flex', alignItems: 'center' }}>{icon}</span>}
       {title}
     </button>
   );
@@ -32,6 +36,8 @@ AppButton.propTypes = {
   title: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
   onClickCallback: PropTypes.func.isRequired,
+  icon: PropTypes.node,
+  style: PropTypes.any
 };
 
 export default AppButton;
