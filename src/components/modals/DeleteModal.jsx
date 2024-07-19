@@ -2,9 +2,9 @@ import { Box, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/mat
 import AppButton from '../common/AppButton';
 
 // eslint-disable-next-line react/prop-types
-const DeleteDialog = ({ open, onClose, onDelete }) => {
+const DeleteDialog = ({ open, onClose, onDelete, loading }) => {
     return (
-        <Dialog open={open} onClose={onClose}>
+        <Dialog open={open} onClose={loading ? null : onClose}>
             <DialogTitle sx={{ padding: '20px 20px', backgroundColor: '#F35144', color: '#FFF' }}>Delete Confirmation</DialogTitle>
             <DialogContent>
                 <Box sx={{ paddingTop: '20px', width: '400px' }}>
@@ -23,6 +23,7 @@ const DeleteDialog = ({ open, onClose, onDelete }) => {
                         width: '90px'
                     }}
                     onClickCallback={onClose}
+                    disabled={loading}
                     title='No'
                 />
                 <AppButton
@@ -33,7 +34,8 @@ const DeleteDialog = ({ open, onClose, onDelete }) => {
                         width: '90px'
                     }}
                     onClickCallback={onDelete}
-                    title='Yes'
+                    disabled={loading}
+                    title={loading ? 'Deleting' : 'Delete'}
                 />
             </DialogActions>
         </Dialog>

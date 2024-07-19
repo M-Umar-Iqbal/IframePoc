@@ -36,3 +36,8 @@ export const transformCounterAnalyticsResponseObject = (data) => {
     }
     return {};
 }
+
+export const transformServiceName = (serviceName) => {
+    if(typeof serviceName !== 'string') return "";
+    return serviceName?.replace(/_/g, ' ');
+}

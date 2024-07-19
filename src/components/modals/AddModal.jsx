@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+
 import {
   Box,
   Dialog,
@@ -12,8 +13,9 @@ import {
   OutlinedInput,
   Select,
 } from '@mui/material';
-import AppButton from '../common/AppButton';
+
 import { BsFillPlusCircleFill, BsXCircle } from 'react-icons/bs';
+import AppButton from '../common/AppButton';
 
 const AddServiceModal = ({
   open,
@@ -29,12 +31,15 @@ const AddServiceModal = ({
     setServiceName(e.target.value);
   };
 
-  const onCostValueChange = (e) => {
-    setServiceCostPerCall(e.target.value);
+  const onCostValueChange = (event) => {
+    const { value } = event.target;
+    if (!isNaN(value) || value === '') {
+      setServiceCostPerCall(value);
+    }
   };
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={open} onClose={loading ? null : onClose}>
       <DialogTitle sx={{ padding: '20px 20px', backgroundColor: '#164A75', color: '#FFF' }}>Add New Service</DialogTitle>
       <DialogContent>
         <Box sx={{ paddingTop: '20px', width: '400px' }}>
@@ -47,29 +52,37 @@ const AddServiceModal = ({
               label='Service Name'
               onChange={handleServiceChange}
             >
-              <MenuItem value={'at-data'}>AtData</MenuItem>
-              <MenuItem value={'click-send'}>ClickSend</MenuItem>
-              <MenuItem value={'real-phone-validation'}>Real Phone Validation</MenuItem>
-              <MenuItem value={'rei-broadcast'}>REI Broadcast</MenuItem>
-              <MenuItem value={'close-bot-ai'}>CloseBot.AI</MenuItem>
+              <MenuItem value={'At_Data'}>AtData</MenuItem>
+              <MenuItem value={'Click_Send'}>ClickSend</MenuItem>
+              <MenuItem value={'Real_Phone_Validation'}>Real Phone Validation</MenuItem>
+              <MenuItem value={'REI_Broadcast'}>REI Broadcast</MenuItem>
+              <MenuItem value={'Closebot.ai'}>CloseBot.AI</MenuItem>
             </Select>
           </FormControl>
           <FormControl fullWidth sx={{ marginTop: '20px' }}>
-            <InputLabel htmlFor='outlined-adornment-amount'>Cost</InputLabel>
+            <InputLabel htmlFor='outlined-adornment-amount'>Cost (Per-Request)</InputLabel>
             <OutlinedInput
               value={serviceCostPerCall}
               onChange={onCostValueChange}
+              inputprops={{
+                inputProps: {
+                  inputMode: 'decimal',
+                },
+              }}
               variant='outlined'
-              type='number'
-              placeholder='Cost / Per Call'
+              placeholder='Cost / Per Request'
               id='outlined-adornment-amount'
               startAdornment={<InputAdornment position='start'>$</InputAdornment>}
-              label='Cost'
+              label='Cost (Per-Request)'
             />
           </FormControl>
         </Box>
       </DialogContent>
-      <DialogActions sx={{ padding: '20px 20px', backgroundColor: '#DBDBD3' }}>
+      <DialogActions
+        sx={{
+          padding: '20px 20px',
+          backgroundColor: '#DBDBD3'
+        }}>
         <AppButton
           icon={<BsXCircle />}
           style={{
@@ -85,10 +98,11 @@ const AddServiceModal = ({
           style={{
             backgroundColor: '#092031',
             color: '#fff',
-            height: '50px'
+            height: '50px',
+            width: '120px'
           }}
           onClickCallback={submitForm}
-          title='Add'
+          title={loading ? 'Adding ' : 'Add'}
           disabled={loading}
         />
       </DialogActions>

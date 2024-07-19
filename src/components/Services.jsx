@@ -15,109 +15,171 @@ import EditDialog from './modals/EditModal';
 import AddServiceModal from './modals/AddModal';
 import { BsFillPlusCircleFill } from 'react-icons/bs';
 import ServicesCard from './cards/ServicesCard';
+import appConfig from '../utils/constants';
 
 function ServicesMain() {
     const [serviceName, setServiceName] = useState('');
-    const [serviceCostPerCall, setServiceCostPerCall] = useState('');
+    const [serviceCostPerCall, setServiceCostPerCall] = useState(0.0);
     const [editModalVisibilityState, setEditModalVisibilityState] = useState(false);
     const [deleteModalVisibilityState, setDeleteModalVisibilityState] = useState(false);
+    const [addModalVisibilityState, setAddModalVisibilityState] = useState(false);
     const [selectedServiceData, setSelectedServiceData] = useState({});
     const [servicesData, setServicesData] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [dialogOpen, setDialogOpen] = useState(false);
+
+    const baseURL = appConfig?.services?.baseURL;
 
     useEffect(() => {
-        const fetchServices = async () => {
-            try {
-                setLoading(true);
-                const response = await axios.get(`http://localhost:3000/v2/payment/payments`);
-                console.log(response);
-                if (response?.data?.payload?.data) {
-                    setServicesData(response?.data?.payload?.data);
-                }
-            } catch (err) {
-                console.log('📌 ~ fetchServices ~ err: ', err);
-            } finally {
-                setLoading(false);
-            }
-        };
         fetchServices();
     }, []);
 
+    const fetchServices = async () => {
+        try {
+            setLoading(true);
+            const response = await axios.get(`${baseURL}/v2/payment/getAllPayments`);
+            if (response?.data?.payload?.data) {
+                setServicesData(response?.data?.payload?.data);
+            }
+        } catch (err) {
+            console.log('📌 ~ fetchServices ~ err: ', err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const openDialog = () => {
-        setDialogOpen(true);
+        setAddModalVisibilityState(true);
     };
 
-    const closeDialog = () => {
-        setDialogOpen(false);
+    const closeAddDialog = () => {
+        setServiceCostPerCall(0.0);
+        setServiceName("");
+        setAddModalVisibilityState(false);
     };
 
-    const submitForm = async () => {
-        if (isEmpty(serviceName)) {
-            toast.error('Please select service name');
-            return;
-        }
-        if (isEmpty(serviceCostPerCall)) {
-            toast.error('Please add cost');
-            return;
-        }
-        const payload = {
-            serviceName: serviceName,
-            serviceCost: serviceCostPerCall,
-        };
-        const response = await axios.post('http://localhost:3000/v2/payment/payments', payload);
-        console.log('📌 ~ submitServiceForm ~ response: ', response);
-        closeDialog(); // Close the dialog after submitting the form
-    };
-
-    const onServiceEdit = (serviceData) => {
-        setEditModalVisibilityState(true);
+    const openEditServiceModal = (serviceData) => {
         setSelectedServiceData(serviceData);
+        setEditModalVisibilityState(true);
     };
 
-    const openDeleteModal = (serviceId) => {
+    const openDeleteServiceModal = (serviceId) => {
+        setSelectedServiceData({_id: serviceId});
         setDeleteModalVisibilityState(true);
-        setSelectedServiceData(serviceId);
     };
 
     const closeDeleteModal = () => {
         setDeleteModalVisibilityState(false);
+        setSelectedServiceData({});
     };
 
     const closeEditModal = () => {
         setEditModalVisibilityState(false);
+        setSelectedServiceData({});
     };
 
-    const editRecord = async (formData) => {
+
+    const addRecord = async () => {
         try {
-            const response = await axios.patch('http://localhost:3000/v2/payment/payments', formData);
-            console.log('📌 ~ editRecord ~ formData: ', response);
+            if (isEmpty(serviceName)) {
+                toast.error('Please select service name');
+                return;
+            }
+            const numericValue = parseFloat(serviceCostPerCall);
+            if(numericValue < 0 ) {
+                toast.error('Cost should be a valid number');
+                return;
+            }
+            const payload = {
+                serviceName: serviceName,
+                price: numericValue,
+            };
+            setLoading(true);
+            const response = await axios.post(`${baseURL}/v2/payment/addPayments`, payload);
+            const status = response?.data?.metadata?.status;
+            const message = response?.data?.metadata?.message;
+            const data = response?.data?.payload.data;
+            if (status === "SUCCESS") {
+                toast.success(message || "Payment service added successfully");
+                setServicesData((servicesData) => [...servicesData, data]);
+                closeAddDialog();
+            } else {
+                toast.error(message || "Unable to add service");
+            }
+        }
+        catch (err) {
+            toast.error("Error fetching results");
+            console.log('📌 ~ editRecord ~ err: ', err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const editRecord = async (formData, serviceId) => {
+        try {
+            setLoading(true);
+            const response = await axios.patch(`${baseURL}/v2/payment/${serviceId}`, formData);
+            const status = response?.data?.metadata?.status;
+            const message = response?.data?.metadata?.message;
+            if(status === "SUCCESS") {
+                toast.success(message);
+                closeEditModal();
+                fetchServices();
+            } else {
+                toast.error(message);
+            }
         } catch (err) {
             console.log('📌 ~ editRecord ~ err: ', err);
+            toast.error("Error fetching results");
+        } finally {
+            setLoading(false);
         }
     };
 
     const deleteRecord = async (serviceId) => {
         try {
-            const response = await axios.delete(`http://localhost:3000/v2/payment/payments/${serviceId}`);
-            console.log('📌 ~ editRecord ~ formData: ', response);
+            setLoading(true);
+            const response = await axios.delete(`${baseURL}/v2/payment/${serviceId}`);
+            const status = response?.data?.metadata?.status;
+            const message = response?.data?.metadata?.message;
+            if(status === "SUCCESS") {
+                const filterData = servicesData?.filter((service) => service._id !== serviceId);
+                toast.success(message);
+                setServicesData(filterData);
+                setDeleteModalVisibilityState(false);
+            } else {
+                toast.error(message);
+            }
         } catch (err) {
             console.log('📌 ~ deleteRecord ~ err: ', err);
+            toast.error("Error fetching results");
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <>
-            <DeleteDialog open={deleteModalVisibilityState} onClose={closeDeleteModal} onDelete={deleteRecord} />
-            <EditDialog open={editModalVisibilityState} onClose={closeEditModal} onUpdate={editRecord} initialData={selectedServiceData} />
+            <DeleteDialog
+                open={deleteModalVisibilityState}
+                onClose={closeDeleteModal}
+                onDelete={() => deleteRecord(selectedServiceData?._id)}
+                loading={loading}
+            />
+            <EditDialog
+                open={editModalVisibilityState}
+                onClose={closeEditModal}
+                onUpdate={editRecord}
+                initialData={selectedServiceData}
+                loading={loading}
+            />
             <AddServiceModal
-                open={dialogOpen}
-                onClose={closeDialog}
+                open={addModalVisibilityState}
+                onClose={closeAddDialog}
                 serviceName={serviceName}
                 setServiceName={setServiceName}
                 serviceCostPerCall={serviceCostPerCall}
                 setServiceCostPerCall={setServiceCostPerCall}
-                submitForm={submitForm}
+                submitForm={addRecord}
                 loading={loading}
             />
             <div style={{ marginTop: '20px', padding: '20px' }}>
@@ -153,9 +215,10 @@ function ServicesMain() {
                                     {servicesData?.map((service, idx) => (
                                         <Grid item xs={12} sm={6} md={4} key={idx}>
                                             <ServicesCard
+                                                loading={loading}
                                                 serviceData={service}
-                                                onEditBtnClickCallback={onServiceEdit}
-                                                openDeleteBtnClickCallback={openDeleteModal}
+                                                onEditBtnClickCallback={openEditServiceModal}
+                                                openDeleteBtnClickCallback={openDeleteServiceModal}
                                             />
                                         </Grid>
                                     ))}

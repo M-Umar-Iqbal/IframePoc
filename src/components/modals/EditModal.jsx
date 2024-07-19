@@ -4,7 +4,7 @@ import { Box, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, In
 import { BsXCircle, BsPencilFill } from 'react-icons/bs';
 import AppButton from '../common/AppButton';
 
-const EditDialog = ({ open, onClose, onUpdate, initialData }) => {
+const EditDialog = ({ open, onClose, onUpdate, initialData, loading }) => {
     const [formData, setFormData] = useState({
         serviceName: initialData?.serviceName,
         price: initialData?.price,
@@ -12,6 +12,15 @@ const EditDialog = ({ open, onClose, onUpdate, initialData }) => {
 
     const handleChange = (event) => {
         const { name, value } = event.target;
+        if(name === 'price') {
+            if (!isNaN(value) || value === '') {
+                setFormData({
+                    ...formData,
+                    [name]: value,
+                });
+            }
+            return
+        }
         setFormData({
             ...formData,
             [name]: value,
@@ -19,8 +28,10 @@ const EditDialog = ({ open, onClose, onUpdate, initialData }) => {
     };
 
     const handleUpdate = () => {
-        onUpdate(formData);
-        onClose();
+        onUpdate({
+            serviceName: formData?.serviceName,
+            price: parseFloat(formData?.price)
+        }, initialData?._id);
     };
 
     useEffect(() => {
@@ -31,7 +42,7 @@ const EditDialog = ({ open, onClose, onUpdate, initialData }) => {
     }, [initialData]);
 
     return (
-        <Dialog open={open} onClose={onClose}>
+        <Dialog open={open} onClose={loading ? null : onClose}>
             <DialogTitle sx={{ padding: '20px 20px', backgroundColor: '#164A75', color: '#FFF' }}>Edit Service</DialogTitle>
             <DialogContent sx={{ paddingTop: '20px', width: '400px' }}>
                 <Box sx={{ paddingTop: '20px', width: '400px' }}>
@@ -47,17 +58,22 @@ const EditDialog = ({ open, onClose, onUpdate, initialData }) => {
                         disabled
                     />
                     <FormControl fullWidth sx={{ marginTop: '20px' }}>
-                        <InputLabel htmlFor='outlined-adornment-amount'>Cost</InputLabel>
+                        <InputLabel htmlFor='outlined-adornment-amount'>Cost (Per-Request)</InputLabel>
                         <OutlinedInput
                             value={formData.price}
                             onChange={handleChange}
+                            inputprops={{
+                                inputProps: {
+                                    inputMode: 'decimal',
+                                },
+                            }}
                             variant='outlined'
-                            type='number'
-                            placeholder='Cost / Per Call'
+                            placeholder='Cost / Per Request'
                             id='outlined-adornment-amount'
                             startAdornment={<InputAdornment position='start'>$</InputAdornment>}
-                            label='Cost'
+                            label='Cost (Per-Request)'
                             name='price'
+                            disabled={loading}
                         />
                     </FormControl>
                 </Box>
@@ -72,6 +88,7 @@ const EditDialog = ({ open, onClose, onUpdate, initialData }) => {
                     }}
                     onClickCallback={onClose}
                     title='Cancel'
+                    disabled={loading}
                 />
                 <AppButton
                     icon={<BsPencilFill />}
@@ -81,7 +98,8 @@ const EditDialog = ({ open, onClose, onUpdate, initialData }) => {
                         height: '50px'
                     }}
                     onClickCallback={handleUpdate}
-                    title='Update'
+                    title={loading ? 'Updating' : 'Update'}
+                    disabled={loading}
                 />
             </DialogActions>
         </Dialog>
