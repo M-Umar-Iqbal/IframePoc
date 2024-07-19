@@ -1,6 +1,8 @@
 .navbar {
     background-color: #091F31;
     overflow: hidden;
+    position: sticky;
+    top: 0
 }
 
 .logo-container {
