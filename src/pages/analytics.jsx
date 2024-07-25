@@ -19,6 +19,7 @@ import Loader from '../components/common/Loader';
 import MessageBanner from '../components/common/MessageBanner';
 import AppButton from '../components/common/AppButton';
 import CircularCountGraph from '../components/graphs/CircularCountGraph';
+import AtDataAnalytics from '../components/AtDataAnalytics';
 
 
 function Analytics() {
@@ -159,6 +160,7 @@ function Analytics() {
                 </div>
             </div> */}
             <div style={{ marginTop: '20px', padding: '20px' }}>
+                <AtDataAnalytics />
                 <div style={{ margin: '20px 0' }}>
                     <Typography variant='h3'>Counter Analytics</Typography>
                 </div>
