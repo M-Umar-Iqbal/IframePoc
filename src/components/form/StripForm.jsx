@@ -14,7 +14,7 @@ import AppButton from '../common/AppButton';
 import appConfig from '../../utils/constants';
 import localStorageUtils from '../../utils/local-storage-utils';
 import Loader from '../common/Loader';
-import PaymentSuccess from '../../pages/payment-success';
+import PaymentSuccess from '../PaymentSuccess';
 
 export default function CheckoutForm({ amount }) {
   const stripe = useStripe();
@@ -78,7 +78,7 @@ export default function CheckoutForm({ amount }) {
 
   return (
     <Card sx={{ padding: '20px', margin: '30px', borderRadius: '12px' }}>
-      {true ? <PaymentSuccess /> : <>
+      {success ? <PaymentSuccess /> : <>
         <PaymentElement />
         <AppButton
           title={!loading ? `Pay $${amount}` : 'Processing...'}
