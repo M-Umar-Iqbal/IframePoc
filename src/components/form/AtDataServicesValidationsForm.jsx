@@ -1,34 +1,34 @@
 import { useState } from 'react';
-import AppButton from '../common/AppButton';
-import CustomTextField from '../common/TextField';
-import validationUtils from '../../utils/validation-utils';
-import appConfig from '../../utils/constants';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { Card, Typography } from '@mui/material';
+import { isEmpty } from 'lodash';
+
+import AppButton from '../common/AppButton';
+import CustomTextField from '../common/TextField';
+import appConfig from '../../utils/constants';
 import localStorageUtils from '../../utils/local-storage-utils';
 
 function AtDataServicesValidationsForm() {
     const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false);
-    const { validateEmail } = validationUtils;
+    const [validationStatusDetails, setValidationStatusDetails] = useState({});
+
     const baseURL = appConfig?.services?.baseURL;
     const resetForm = () => {
         setEmail("");
     }
     const validateAtData = async (event) => {
         event.preventDefault(); // Prevent default form submission
-        const isValidEmail = validateEmail(email);
-        if (!isValidEmail) {
-            toast.error('Please use a valid email to validate by using At-Data');
+        if (isEmpty(email.trim())) {
+            toast.error('Please use an email to validate');
             return;
         }
         setLoading(true);
         try {
-            const accEmail = localStorageUtils.getItem('accEmail');
             const accId = localStorageUtils.getItem('accId');
             const payload = {
-                email: accEmail,
+                email: email,
                 subAccount: accId,
                 service: "At_Data"
             }
@@ -37,6 +37,7 @@ function AtDataServicesValidationsForm() {
             if (data) {
                 toast.success('Email has been validated successfully!');
                 resetForm();
+                setValidationStatusDetails(data?.safe_to_send);
                 return;
             } else {
                 toast.error('Unable to validate email via At Data');
@@ -58,7 +59,23 @@ function AtDataServicesValidationsForm() {
         <Card sx={{ padding: '20px', borderRadius: '12px', backgroundColor: '#FFF' }}>
             <Typography variant='h6' sx={{ padding: 0, margin: 0, color: '#000' }}>Validate Your Emails using At Data</Typography>
             <form onSubmit={validateAtData}>
-                <CustomTextField label={'Email'} placeholder={'e.g. user@gmail.com'} onChange={onDataChange} />
+                <CustomTextField label={'Email'}
+                    value={email}
+                    placeholder={'e.g. user@gmail.com'}
+                    onChange={onDataChange} />
+                {!isEmpty(validationStatusDetails) && <div
+                    style={{
+                        backgroundColor: "#E5E5E5",
+                        padding: "10px", borderRadius: "12px",
+                        overflow: "hidden",
+                        textWrap: "initial",
+                        wordwrap: "break-word",
+                        whiteSpace: "pre-wrap",
+                        overflowWrap: "break-word",
+                    }}
+                >
+                    {JSON.stringify(validationStatusDetails)}
+                </div>}
                 <div style={{ marginTop: '10px' }}>
                     <AppButton
                         disabled={loading}
@@ -67,7 +84,7 @@ function AtDataServicesValidationsForm() {
                             color: '#FFF',
                             width: '100%'
                         }}
-                        title='Validate Email'
+                        title={loading ? 'Validating... ' : 'Validate Email'}
                         onClickCallback={validateAtData} />
                 </div>
             </form>
