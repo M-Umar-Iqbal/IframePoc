@@ -3,7 +3,7 @@ import { FaCheckCircle } from 'react-icons/fa';
 const PaymentSuccess = () => {
   const containerStyle = {
     display: 'flex',
-    height: '100vh',
+    height: '300px',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',

@@ -10,7 +10,6 @@ import Checkout from './pages/checkout';
 import { getAllQueryParams } from './utils/client-utils';
 import appConfig from './utils/constants';
 import localStorageUtils from './utils/local-storage-utils';
-import PaymentSuccess from './pages/payment-success';
 import ServicesValidations from './pages/services-validations';
 
 function App() {
@@ -47,9 +46,7 @@ function App() {
         <Route path="/" element={<Analytics />} />
         <Route path="/services" element={<Services />} />
         <Route path="/checkout" element={<Checkout />} />
-        <Route path="/payment-success" element={<PaymentSuccess />} />
         <Route path="/services-validations" element={<ServicesValidations />} />
-
       </Routes>
     </>
   );
