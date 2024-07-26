@@ -48,23 +48,25 @@ export default function CheckoutForm({ amount }) {
     setLoading(true);
     const response = await axios.post(`${baseURL}/v2/user/chargeUser`, payload);
     const data = response?.data?.payload?.data;
-    if (!data) return;
-    const { clientSecret } = data;
-    // Confirm the PaymentIntent using the details collected by the Payment Element
+    if (!data?.clientSecret) {
+      setLoading(false);
+      return;
+    }
+    const clientSecret = data?.clientSecret;
     const { error } = await stripe.confirmPayment({
       elements,
-      clientSecret: clientSecret,
-      confirmParams: {},
+      clientSecret,
+      confirmParams: {
+        return_url: ''
+      },
+      redirect: 'if_required'
     });
-
     if (error) {
       handleError(error);
     } else {
       setSuccess(true);
       setLoading(false);
       toast.success('Payment has been successful!');
-      window.parent.postMessage('payment-success', '*');
-
     }
   };
 

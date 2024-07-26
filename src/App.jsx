@@ -18,7 +18,6 @@ function App() {
   const baseURL = appConfig?.services?.baseURL;
 
   useEffect(() => {
-    localStorageUtils.clear();
     if (!accEmail || !accId) return;
     const createUser = async () => {
       // This method will create new user in our DB if the user wasn't there previously.
@@ -26,6 +25,7 @@ function App() {
         subAccountName: accEmail,
         subAccountId: accId
       }
+      localStorageUtils.clear();
       localStorageUtils.setItem('accEmail', accEmail);
       localStorageUtils.setItem('accId', accId);
       try {
