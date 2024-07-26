@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Box, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material';
 import { BsXCircle, BsPencilFill } from 'react-icons/bs';
 import AppButton from '../common/AppButton';
+import { transformServiceName } from '../../utils/client-utils';
 
 const EditDialog = ({ open, onClose, onUpdate, initialData, loading }) => {
     const [formData, setFormData] = useState({
@@ -53,7 +54,7 @@ const EditDialog = ({ open, onClose, onUpdate, initialData, loading }) => {
                         label='Service Name'
                         type='text'
                         fullWidth
-                        value={formData.serviceName}
+                        value={transformServiceName(formData?.serviceName)}
                         onChange={handleChange}
                         disabled
                     />
