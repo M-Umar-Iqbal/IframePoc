@@ -19,6 +19,7 @@ const AppButton = ({ style, title, disabled, onClickCallback, icon }) => {
         alignItems: 'center',
         justifyContent: 'center',
         gap: '8px',
+        height: '50px',
         ...style
       }}
       disabled={disabled}
