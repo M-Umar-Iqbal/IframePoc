@@ -185,7 +185,7 @@ function ServicesMain() {
             <div style={{ marginTop: '20px', padding: '20px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' }}>
                     <Box sx={{ margin: '20px 0' }}>
-                        <Typography variant='h3'>Payment Services</Typography>
+                        <Typography variant='h4'>Payment Services</Typography>
                     </Box>
                     <div>
                         <AppButton

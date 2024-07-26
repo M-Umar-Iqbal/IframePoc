@@ -40,11 +40,11 @@ function AtDataServicesValidationsForm() {
                 setValidationStatusDetails(data?.safe_to_send);
                 return;
             } else {
-                toast.error('Unable to validate email via At Data');
+                toast.error('Unable to validate email');
             }
         } catch (err) {
             console.log('📌 ~ validateAtData ~ err: ', err);
-            toast.error('Unable to validate email via At Data');
+            toast.error('Unable to validate email');
         } finally {
             setLoading(false);
         }
@@ -57,11 +57,11 @@ function AtDataServicesValidationsForm() {
 
     return (
         <Card sx={{ padding: '20px', borderRadius: '12px', backgroundColor: '#FFF' }}>
-            <Typography variant='h6' sx={{ padding: 0, margin: 0, color: '#000' }}>Validate Your Emails using At Data</Typography>
+            <Typography variant='h6' sx={{ padding: 0, margin: 0, color: '#000' }}>Validate your emails using At Data</Typography>
             <form onSubmit={validateAtData}>
                 <CustomTextField label={'Email'}
                     value={email}
-                    placeholder={'e.g. user@gmail.com'}
+                    placeholder={'Enter email to validate'}
                     onChange={onDataChange} />
                 {!isEmpty(validationStatusDetails) && <div
                     style={{

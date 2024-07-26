@@ -1,4 +1,5 @@
 import { Doughnut } from "react-chartjs-2";
+import 'chart.js/auto';
 
 // eslint-disable-next-line react/prop-types
 function AtDataAnalyticsGraph({ valid = 0, serverError = 0, noResponse = 0 }) {
