@@ -21,7 +21,10 @@ const Navbar = () => {
             Validate Services
           </Link>
           <Link className={`link ${route.pathname === '/checkout' ? 'active' : ''}`} to="/checkout">
-            Purchase Plain
+            POC 1
+          </Link>
+          <Link className={`link ${route.pathname === '/payment-via-stripe' ? 'active' : ''}`} to="/payment-via-stripe">
+            POC 2
           </Link>
         </div>
       </div>
