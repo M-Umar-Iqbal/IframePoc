@@ -13,7 +13,9 @@ function AtDataServicesValidationsForm() {
     const [loading, setLoading] = useState(false);
     const { validateEmail } = validationUtils;
     const baseURL = appConfig?.services?.baseURL;
-
+    const resetForm = () => {
+        setEmail("");
+    }
     const validateAtData = async (event) => {
         event.preventDefault(); // Prevent default form submission
         const isValidEmail = validateEmail(email);
@@ -34,6 +36,7 @@ function AtDataServicesValidationsForm() {
             const data = response?.data?.payload?.data;
             if (data) {
                 toast.success('Email has been validated successfully!');
+                resetForm();
                 return;
             } else {
                 toast.error('Unable to validate email via At Data');
@@ -42,7 +45,7 @@ function AtDataServicesValidationsForm() {
             console.log('📌 ~ validateAtData ~ err: ', err);
             toast.error('Unable to validate email via At Data');
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
     };
 
