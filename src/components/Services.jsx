@@ -1,19 +1,18 @@
 import { useState, useEffect } from 'react';
 import {
-    Box,
     Grid,
     Typography,
 } from '@mui/material';
 import { isEmpty } from 'lodash';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { BsFillPlusCircleFill } from 'react-icons/bs';
 
 import AppButton from './common/AppButton';
 import Loader from './common/Loader';
 import DeleteDialog from './modals/DeleteModal';
 import EditDialog from './modals/EditModal';
 import AddServiceModal from './modals/AddModal';
-import { BsFillPlusCircleFill } from 'react-icons/bs';
 import ServicesCard from './cards/ServicesCard';
 import appConfig from '../utils/constants';
 
@@ -182,26 +181,31 @@ function ServicesMain() {
                 submitForm={addRecord}
                 loading={loading}
             />
-            <div style={{ marginTop: '20px', padding: '20px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' }}>
-                    <Box sx={{ margin: '20px 0' }}>
-                        <Typography variant='h4'>Payment Services</Typography>
-                    </Box>
-                    <div>
-                        <AppButton
-                            icon={<BsFillPlusCircleFill size={20} />}
-                            style={{
-                                backgroundColor: '#091F31',
-                                color: 'white',
-                                height: '50px'
-                            }}
-                            onClickCallback={openDialog}
-                            title='Add New Service'
-                            disabled={loading}
-                        />
-                    </div>
+            <div style={{ padding: '20px 30px' }}>
+            <div
+            style={{
+                marginTop: '20px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexWrap: 'wrap'
+            }}>
+                    <Typography variant='h4'  sx={{ margin: "5px 0" }}>Payment Services</Typography>
+                <div>
+                    <AppButton
+                        icon={<BsFillPlusCircleFill size={20} />}
+                        style={{
+                            backgroundColor: '#091F31',
+                            color: 'white',
+                            height: '50px'
+                        }}
+                        onClickCallback={openDialog}
+                        title='Add Service'
+                        disabled={loading}
+                    />
                 </div>
-                <hr />
+            </div>
+            <hr />
                 {loading ?
                     <div style={{ height: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <Loader />

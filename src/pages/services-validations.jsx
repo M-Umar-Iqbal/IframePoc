@@ -5,7 +5,7 @@ import AtDataServicesValidationsForm from "../components/form/AtDataServicesVali
 function ServicesValidations() {
     return (
         <>
-            <div style={{ padding: "30px" }}>
+            <div style={{ padding: '20px 30px' }}>
                 <div style={{ margin: '20px 0' }}>
                     <Typography variant='h4' sx={{ margin: "5px 0" }}>Validation Services</Typography>
                     <hr />
