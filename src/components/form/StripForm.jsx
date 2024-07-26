@@ -63,8 +63,9 @@ export default function CheckoutForm({ amount }) {
     } else {
       setSuccess(true);
       setLoading(false);
-      toast.success('Payment has been successful!');      // Notify the parent window that the payment was successful
+      toast.success('Payment has been successful!');
       window.parent.postMessage('payment-success', '*');
+
     }
   };
 
