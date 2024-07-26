@@ -7,12 +7,12 @@ const Navbar = () => {
   return (
     <div className="navbar">
       <div className='nav-container'>
-        <div href="/" className="logo-container">
+        <a href="/" className="logo-container">
           <img width={150} src={rocketlyLogo} />
-        </div>
+        </a>
         <div className='links-container'>
           <Link className={`link ${route.pathname === '/' ? 'active' : ''}`} to="/">
-            Home
+            Dashboard
           </Link>
           <Link className={`link ${route.pathname === '/services' ? 'active' : ''}`} to="/services">
             Services
@@ -21,7 +21,7 @@ const Navbar = () => {
             Validate Services
           </Link>
           <Link className={`link ${route.pathname === '/checkout' ? 'active' : ''}`} to="/checkout">
-            Checkout
+            Purchase Plain
           </Link>
         </div>
       </div>
