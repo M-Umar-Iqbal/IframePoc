@@ -7,7 +7,6 @@ const stripePromise = loadStripe("pk_test_51NZrH0C0wgKISC6Qdz5K1tfa7ZzPdrOfIS2ti
 function PaymentViaStripCheckout() {
   const options = {
     mode: 'payment',
-    payment_method_types: ["card"],
     currency: 'usd',
     amount: 100,
     appearance: {},
