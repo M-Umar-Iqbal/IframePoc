@@ -11,6 +11,7 @@ import { getAllQueryParams } from './utils/client-utils';
 import appConfig from './utils/constants';
 import localStorageUtils from './utils/local-storage-utils';
 import PaymentSuccess from './pages/payment-success';
+import ServicesValidations from './pages/services-validations';
 
 function App() {
   const params = getAllQueryParams();
@@ -47,6 +48,8 @@ function App() {
         <Route path="/services" element={<Services />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/payment-success" element={<PaymentSuccess />} />
+        <Route path="/services-validations" element={<ServicesValidations />} />
+
       </Routes>
     </>
   );
