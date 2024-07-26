@@ -63,14 +63,19 @@ export default function CheckoutForm({ amount }) {
     } else {
       setSuccess(true);
       setLoading(false);
-      toast.success('Payment has been successful!');
+      toast.success('Payment has been successful!');      // Notify the parent window that the payment was successful
+      window.parent.postMessage('payment-success', '*');
     }
   };
+
   if (!stripe || !elements) {
-    return <div style={{ height: '300px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <Loader />;
-    </div>
+    return (
+      <div style={{ height: '300px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Loader />
+      </div>
+    );
   }
+
   return (
     <Card sx={{ padding: '20px', margin: '30px', borderRadius: '12px' }}>
       <PaymentElement />
