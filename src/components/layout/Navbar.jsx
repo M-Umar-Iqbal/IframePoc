@@ -17,6 +17,9 @@ const Navbar = () => {
           <Link className={`link ${route.pathname === '/services' ? 'active' : ''}`} to="/services">
             Services
           </Link>
+          <Link className={`link ${route.pathname === '/checkout' ? 'active' : ''}`} to="/checkout">
+            Checkout
+          </Link>
         </div>
       </div>
     </div>
