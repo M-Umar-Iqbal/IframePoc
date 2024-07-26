@@ -6,6 +6,7 @@ import appConfig from '../../utils/constants';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { Card, Typography } from '@mui/material';
+import localStorageUtils from '../../utils/local-storage-utils';
 
 function AtDataServicesValidationsForm() {
     const [email, setEmail] = useState('');
@@ -20,15 +21,23 @@ function AtDataServicesValidationsForm() {
             toast.error('Please use a valid email to validate by using At-Data');
             return;
         }
-        setLoading(true)
+        setLoading(true);
         try {
-            const response = await axios.post(`${baseURL}/v2/transactions/process`);
+            const accEmail = localStorageUtils.getItem('accEmail');
+            const accId = localStorageUtils.getItem('accId');
+            const payload = {
+                email: accEmail,
+                subAccount: accId,
+                service: "At_Data"
+            }
+            const response = await axios.post(`${baseURL}/v2/transactions/process`, payload);
             const data = response?.data?.payload?.data;
             if (data) {
-                toast.success('Email has been validated using At Data successfully!');
+                toast.success('Email has been validated successfully!');
                 return;
+            } else {
+                toast.error('Unable to validate email via At Data');
             }
-
         } catch (err) {
             console.log('📌 ~ validateAtData ~ err: ', err);
             toast.error('Unable to validate email via At Data');
