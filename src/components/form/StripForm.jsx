@@ -14,6 +14,7 @@ import AppButton from '../common/AppButton';
 import appConfig from '../../utils/constants';
 import localStorageUtils from '../../utils/local-storage-utils';
 import Loader from '../common/Loader';
+import PaymentSuccess from '../../pages/payment-success';
 
 export default function CheckoutForm({ amount }) {
   const stripe = useStripe();
@@ -53,9 +54,7 @@ export default function CheckoutForm({ amount }) {
     const { error } = await stripe.confirmPayment({
       elements,
       clientSecret: clientSecret,
-      confirmParams: {
-        return_url: 'https://roc-iframe-poc.vercel.app/payment-success',
-      },
+      confirmParams: {},
     });
 
     if (error) {
@@ -79,15 +78,17 @@ export default function CheckoutForm({ amount }) {
 
   return (
     <Card sx={{ padding: '20px', margin: '30px', borderRadius: '12px' }}>
-      <PaymentElement />
-      <AppButton
-        title={!loading ? `Pay $${amount}` : 'Processing...'}
-        style={{ backgroundColor: '#092031', color: '#FFFFFF', width: '100%' }}
-        onClickCallback={handleSubmit}
-        disabled={!stripe || !elements}
-      />
-      {errorMessage && <div style={{ marginTop: '10px', color: 'red' }}>{errorMessage}</div>}
-      {success && <div>Payment succeeded!</div>}
+      {true ? <PaymentSuccess /> : <>
+        <PaymentElement />
+        <AppButton
+          title={!loading ? `Pay $${amount}` : 'Processing...'}
+          style={{ backgroundColor: '#092031', color: '#FFFFFF', width: '100%' }}
+          onClickCallback={handleSubmit}
+          disabled={!stripe || !elements || loading}
+        />
+        {errorMessage && <div style={{ marginTop: '10px', color: 'red' }}>{errorMessage}</div>}
+      </>
+      }
     </Card>
   );
 }
