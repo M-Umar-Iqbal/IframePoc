@@ -8,6 +8,7 @@ function PaymentViaStripCheckout() {
   const options = {
     mode: 'payment',
     currency: 'usd',
+    payment_method_types: ["card"],
     amount: 100,
     appearance: {},
   };
